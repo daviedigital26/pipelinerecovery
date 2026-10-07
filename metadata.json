@@ -1,0 +1,6 @@
+{
+  "name": "Reale - Real Estate Marketing Studio",
+  "description": "Ready-to-use social posts, buyer guides, email newsletters, and phone scripts built for busy real estate agents.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
