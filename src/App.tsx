@@ -8,35 +8,84 @@ import { RoiCalculator } from './components/RoiCalculator';
 import { Testimonials } from './components/Testimonials';
 import { Pricing } from './components/Pricing';
 import { Faq } from './components/Faq';
+import { FinalCta } from './components/FinalCta';
 import { Footer } from './components/Footer';
-import { SignupModal } from './components/SignupModal';
-import { GuidePreviewModal } from './components/GuidePreviewModal';
+import { AuditModal } from './components/AuditModal';
 import { MobileStickyBar } from './components/MobileStickyBar';
+import { ParallaxBackground } from './components/ParallaxBackground';
 
-// Dedicated Landing Pages for Each Offer
+// Dedicated Landing & Offer Pages
 import { AllOffersOverview } from './components/offers/AllOffersOverview';
 import { PipelineRecoveryPage } from './components/offers/PipelineRecoveryPage';
-import { HandoffAuditPage } from './components/offers/HandoffAuditPage';
-import { ListingLaunchpadPage } from './components/offers/ListingLaunchpadPage';
-import { SphereNurturePage } from './components/offers/SphereNurturePage';
-import { ScriptVaultPage } from './components/offers/ScriptVaultPage';
+import { PriceDropProPage } from './components/offers/PriceDropProPage';
+import { HowItWorksPage } from './components/pages/HowItWorksPage';
+import { BlueprintPage } from './components/pages/BlueprintPage';
+import { ResourcesPage } from './components/pages/ResourcesPage';
+import { AboutPage } from './components/pages/AboutPage';
+import { ContactPage } from './components/pages/ContactPage';
 
 export default function App() {
   const [currentOfferSlug, setCurrentOfferSlug] = useState<string | null>(() => {
     const hash = window.location.hash.replace(/^#/, '');
-    const validSlugs = ['pipeline-recovery', 'handoff-audit', 'listing-launchpad', 'sphere-nurture', 'script-vault'];
+    const validSlugs = [
+      'realtor-pipeline-recovery',
+      'pipeline-recovery',
+      'price-drop-pro',
+      'how-it-works',
+      'revenue-architecture-blueprint',
+      'blueprint',
+      'resources',
+      'about',
+      'contact',
+      'faq',
+      'pricing',
+      'free-pipeline-audit',
+      'listing-relaunch-review'
+    ];
+    if (hash === 'pipeline-recovery') return 'realtor-pipeline-recovery';
+    if (hash === 'blueprint') return 'revenue-architecture-blueprint';
     return validSlugs.includes(hash) ? hash : null;
   });
 
-  const [trialModalOpen, setTrialModalOpen] = useState(false);
-  const [guideModalOpen, setGuideModalOpen] = useState(false);
+  const [auditModalOpen, setAuditModalOpen] = useState(false);
+  const [auditModalType, setAuditModalType] = useState<'pipeline' | 'listing'>('pipeline');
   const [toastMessage, setToastMessage] = useState<string | null>(null);
 
   // Sync hash changes
   useEffect(() => {
     const handleHashChange = () => {
       const hash = window.location.hash.replace(/^#/, '');
-      const validSlugs = ['pipeline-recovery', 'handoff-audit', 'listing-launchpad', 'sphere-nurture', 'script-vault'];
+      if (hash === 'free-pipeline-audit') {
+        setAuditModalType('pipeline');
+        setAuditModalOpen(true);
+        return;
+      }
+      if (hash === 'listing-relaunch-review') {
+        setAuditModalType('listing');
+        setAuditModalOpen(true);
+        return;
+      }
+      if (hash === 'pipeline-recovery') {
+        setCurrentOfferSlug('realtor-pipeline-recovery');
+        return;
+      }
+      if (hash === 'blueprint') {
+        setCurrentOfferSlug('revenue-architecture-blueprint');
+        return;
+      }
+
+      const validSlugs = [
+        'realtor-pipeline-recovery',
+        'price-drop-pro',
+        'how-it-works',
+        'revenue-architecture-blueprint',
+        'resources',
+        'about',
+        'contact',
+        'faq',
+        'pricing'
+      ];
+
       if (validSlugs.includes(hash)) {
         setCurrentOfferSlug(hash);
       } else if (!hash) {
@@ -49,13 +98,33 @@ export default function App() {
   }, []);
 
   const handleSelectOffer = (slug: string | null) => {
-    setCurrentOfferSlug(slug);
-    if (slug) {
-      window.location.hash = slug;
+    if (slug === 'free-pipeline-audit') {
+      setAuditModalType('pipeline');
+      setAuditModalOpen(true);
+      return;
+    }
+    if (slug === 'listing-relaunch-review') {
+      setAuditModalType('listing');
+      setAuditModalOpen(true);
+      return;
+    }
+
+    let targetSlug = slug;
+    if (slug === 'pipeline-recovery') targetSlug = 'realtor-pipeline-recovery';
+    if (slug === 'blueprint') targetSlug = 'revenue-architecture-blueprint';
+
+    setCurrentOfferSlug(targetSlug);
+    if (targetSlug) {
+      window.location.hash = targetSlug;
     } else {
       history.pushState(null, '', window.location.pathname);
     }
     window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handleOpenAuditModal = (type: 'pipeline' | 'listing' = 'pipeline') => {
+    setAuditModalType(type);
+    setAuditModalOpen(true);
   };
 
   const showToast = (message: string) => {
@@ -65,157 +134,201 @@ export default function App() {
     }, 3200);
   };
 
-  const handleExploreDemo = () => {
-    const el = document.getElementById('try-your-name');
+  const handleExploreProcess = () => {
+    const el = document.getElementById('process-system');
     if (el) {
       el.scrollIntoView({ behavior: 'smooth' });
+    } else {
+      handleSelectOffer('how-it-works');
     }
   };
 
   return (
-    <div className="min-h-screen bg-[#0b101b] text-slate-100 flex flex-col font-sans pb-16 md:pb-0">
-      {/* Global Navigation with Offer Switcher */}
+    <div className="min-h-screen bg-[#081020] text-slate-100 flex flex-col font-sans pb-16 md:pb-0 relative selection:bg-[#4F5DFF] selection:text-white">
+      {/* 3D Dynamic Parallax Background with smooth scene crossfading */}
+      <ParallaxBackground />
+
+      {/* Global Navigation with Reale Revenue Systems Links */}
       <OfferNav
         currentOfferSlug={currentOfferSlug}
         onSelectOffer={handleSelectOffer}
-        onOpenTrial={() => setTrialModalOpen(true)}
+        onOpenAudit={handleOpenAuditModal}
       />
 
-      {/* Main Funnel Flow */}
-      <main className="flex-1">
-        {currentOfferSlug === 'pipeline-recovery' && (
+      {/* Main Content Area */}
+      <main className="flex-1 relative z-10">
+        
+        {/* PAGE: REALTOR PIPELINE RECOVERY */}
+        {currentOfferSlug === 'realtor-pipeline-recovery' && (
+          <PipelineRecoveryPage
+            onOpenAudit={() => handleOpenAuditModal('pipeline')}
+            onBackHome={() => handleSelectOffer(null)}
+            onSelectOffer={handleSelectOffer}
+          />
+        )}
+
+        {/* PAGE: PRICE DROP PRO */}
+        {currentOfferSlug === 'price-drop-pro' && (
+          <PriceDropProPage
+            onOpenListingAudit={() => handleOpenAuditModal('listing')}
+            onBackHome={() => handleSelectOffer(null)}
+          />
+        )}
+
+        {/* PAGE: HOW IT WORKS */}
+        {currentOfferSlug === 'how-it-works' && (
+          <HowItWorksPage
+            onOpenAudit={() => handleOpenAuditModal('pipeline')}
+            onBackHome={() => handleSelectOffer(null)}
+          />
+        )}
+
+        {/* PAGE: REVENUE ARCHITECTURE BLUEPRINT */}
+        {currentOfferSlug === 'revenue-architecture-blueprint' && (
+          <BlueprintPage
+            onOpenAudit={() => handleOpenAuditModal('pipeline')}
+            onBackHome={() => handleSelectOffer(null)}
+          />
+        )}
+
+        {/* PAGE: RESOURCES */}
+        {currentOfferSlug === 'resources' && (
+          <ResourcesPage
+            onOpenAudit={handleOpenAuditModal}
+            onBackHome={() => handleSelectOffer(null)}
+          />
+        )}
+
+        {/* PAGE: ABOUT */}
+        {currentOfferSlug === 'about' && (
+          <AboutPage
+            onOpenAudit={() => handleOpenAuditModal('pipeline')}
+            onBackHome={() => handleSelectOffer(null)}
+          />
+        )}
+
+        {/* PAGE: CONTACT */}
+        {currentOfferSlug === 'contact' && (
+          <ContactPage
+            onOpenAudit={handleOpenAuditModal}
+            onBackHome={() => handleSelectOffer(null)}
+            showToast={showToast}
+          />
+        )}
+
+        {/* PAGE: PRICING / COMMERCIAL STRUCTURE */}
+        {currentOfferSlug === 'pricing' && (
           <div>
-            <PipelineRecoveryPage
-              onOpenTrial={() => setTrialModalOpen(true)}
-              showToast={showToast}
-            />
-            <AllOffersOverview
-              onSelectOffer={handleSelectOffer}
-              onOpenTrial={() => setTrialModalOpen(true)}
-            />
+            <div className="bg-[#0c162c] border-b border-slate-800 py-3 px-4 text-center">
+              <div className="mx-auto max-w-7xl flex flex-wrap items-center justify-between gap-3 text-xs">
+                <button
+                  onClick={() => handleSelectOffer(null)}
+                  className="text-slate-300 hover:text-white font-semibold cursor-pointer"
+                >
+                  ← Back to Home
+                </button>
+                <span className="text-[#2DD4BF] font-semibold">
+                  Commercial Offer Structure &bull; Free Review &bull; $1,750 Blueprint
+                </span>
+              </div>
+            </div>
+            <Pricing onOpenAudit={handleOpenAuditModal} onSelectOffer={handleSelectOffer} />
+            <Faq onOpenAudit={() => handleOpenAuditModal('pipeline')} />
+            <FinalCta onOpenAudit={() => handleOpenAuditModal('pipeline')} />
           </div>
         )}
 
-        {currentOfferSlug === 'handoff-audit' && (
+        {/* PAGE: FAQ */}
+        {currentOfferSlug === 'faq' && (
           <div>
-            <HandoffAuditPage
-              onOpenTrial={() => setTrialModalOpen(true)}
-              showToast={showToast}
-            />
-            <AllOffersOverview
-              onSelectOffer={handleSelectOffer}
-              onOpenTrial={() => setTrialModalOpen(true)}
-            />
+            <div className="bg-[#0c162c] border-b border-slate-800 py-3 px-4 text-center">
+              <div className="mx-auto max-w-7xl flex flex-wrap items-center justify-between gap-3 text-xs">
+                <button
+                  onClick={() => handleSelectOffer(null)}
+                  className="text-slate-300 hover:text-white font-semibold cursor-pointer"
+                >
+                  ← Back to Home
+                </button>
+                <span className="text-[#4F5DFF] font-semibold">
+                  Frequently Asked Questions &bull; Reale Revenue Systems
+                </span>
+              </div>
+            </div>
+            <Faq onOpenAudit={() => handleOpenAuditModal('pipeline')} />
+            <FinalCta onOpenAudit={() => handleOpenAuditModal('pipeline')} />
           </div>
         )}
 
-        {currentOfferSlug === 'listing-launchpad' && (
-          <div>
-            <ListingLaunchpadPage
-              onOpenTrial={() => setTrialModalOpen(true)}
-              onPreviewGuide={() => setGuideModalOpen(true)}
-              showToast={showToast}
-            />
-            <AllOffersOverview
-              onSelectOffer={handleSelectOffer}
-              onOpenTrial={() => setTrialModalOpen(true)}
-            />
-          </div>
-        )}
-
-        {currentOfferSlug === 'sphere-nurture' && (
-          <div>
-            <SphereNurturePage
-              onOpenTrial={() => setTrialModalOpen(true)}
-              showToast={showToast}
-            />
-            <AllOffersOverview
-              onSelectOffer={handleSelectOffer}
-              onOpenTrial={() => setTrialModalOpen(true)}
-            />
-          </div>
-        )}
-
-        {currentOfferSlug === 'script-vault' && (
-          <div>
-            <ScriptVaultPage
-              onOpenTrial={() => setTrialModalOpen(true)}
-              showToast={showToast}
-            />
-            <AllOffersOverview
-              onSelectOffer={handleSelectOffer}
-              onOpenTrial={() => setTrialModalOpen(true)}
-            />
-          </div>
-        )}
-
-        {/* Default Main Studio Overview Flow */}
+        {/* HOME PAGE */}
         {currentOfferSlug === null && (
           <>
-            {/* 1. Hero with 6th-grade hook and before/after */}
+            {/* 1. Hero */}
             <Hero
-              onOpenTrial={() => setTrialModalOpen(true)}
-              onExploreDemo={handleExploreDemo}
+              onOpenAudit={() => handleOpenAuditModal('pipeline')}
+              onExploreProcess={handleExploreProcess}
             />
 
-            {/* 2. Specialized Offers Hub Spotlight */}
-            <AllOffersOverview
-              onSelectOffer={handleSelectOffer}
-              onOpenTrial={() => setTrialModalOpen(true)}
-            />
-
-            {/* 3. Interactive "Try Your Name" Live Sample Kit */}
+            {/* 2. Interactive Pipeline Diagnostic directly below Hero */}
             <Personalizer
-              onOpenTrial={() => setTrialModalOpen(true)}
-              onPreviewGuide={() => setGuideModalOpen(true)}
+              onOpenAudit={() => handleOpenAuditModal('pipeline')}
               showToast={showToast}
             />
 
-            {/* 4. The 4 Core Monthly Deliverables */}
-            <WhatYouGet onOpenTrial={() => setTrialModalOpen(true)} />
+            {/* 3. The Next Good Conversation May Already Be in Your CRM */}
+            <WhatYouGet
+              onOpenAudit={() => handleOpenAuditModal('pipeline')}
+              onSelectOffer={handleSelectOffer}
+            />
 
-            {/* 5. Dead-Simple 3-Step Process & Agency Comparison */}
-            <HowItWorks onOpenTrial={() => setTrialModalOpen(true)} />
+            {/* 4. Find It. Fix It. Follow Through. (5-Step System & Blueprint) */}
+            <AllOffersOverview
+              onSelectOffer={handleSelectOffer}
+              onOpenAudit={() => handleOpenAuditModal('pipeline')}
+            />
 
-            {/* 6. The Commission ROI Calculator */}
-            <RoiCalculator onOpenTrial={() => setTrialModalOpen(true)} />
+            {/* 5. How It Works (Start Small. Fix the Next Step. + Comparison Table) */}
+            <HowItWorks onOpenAudit={() => handleOpenAuditModal('pipeline')} />
 
-            {/* 7. Authentic Social Proof & Closings */}
-            <Testimonials onOpenTrial={() => setTrialModalOpen(true)} />
+            {/* 6. Follow-Up Economics (Math on Quiet Leads vs $1,750 Blueprint) */}
+            <RoiCalculator onOpenAudit={() => handleOpenAuditModal('pipeline')} />
 
-            {/* 8. Clear, No-Brainer Pricing with 14-day free trial */}
-            <Pricing onOpenTrial={() => setTrialModalOpen(true)} />
+            {/* 7. What Pipeline Recovery Looks Like (Process Deliverables & Case Studies) */}
+            <Testimonials onOpenAudit={() => handleOpenAuditModal('pipeline')} />
 
-            {/* 9. 6th-Grade Plain English FAQ */}
-            <Faq onOpenTrial={() => setTrialModalOpen(true)} />
+            {/* 8. Commercial Offer Structure */}
+            <Pricing onOpenAudit={handleOpenAuditModal} onSelectOffer={handleSelectOffer} />
+
+            {/* 9. Shared FAQ */}
+            <Faq onOpenAudit={() => handleOpenAuditModal('pipeline')} />
+
+            {/* 10. Final CTA */}
+            <FinalCta onOpenAudit={() => handleOpenAuditModal('pipeline')} />
           </>
         )}
       </main>
 
       {/* Global Footer */}
-      <Footer onOpenTrial={() => setTrialModalOpen(true)} />
-
-      {/* Mobile Conversion Sticky Bar (<15% viewport height) */}
-      <MobileStickyBar onOpenTrial={() => setTrialModalOpen(true)} />
-
-      {/* Interactive Free Trial Signup / Instant Download Modal */}
-      <SignupModal
-        isOpen={trialModalOpen}
-        onClose={() => setTrialModalOpen(false)}
-        showToast={showToast}
+      <Footer
+        onSelectRoute={handleSelectOffer}
+        onOpenAudit={() => handleOpenAuditModal('pipeline')}
       />
 
-      {/* 12-Page Home Seller Guide Interactive Preview Modal */}
-      <GuidePreviewModal
-        isOpen={guideModalOpen}
-        onClose={() => setGuideModalOpen(false)}
-        onOpenTrial={() => setTrialModalOpen(true)}
+      {/* Mobile Sticky Bar (<15% viewport height) */}
+      <MobileStickyBar onOpenAudit={() => handleOpenAuditModal('pipeline')} />
+
+      {/* Honest Audit / Listing Review Request Modal */}
+      <AuditModal
+        isOpen={auditModalOpen}
+        onClose={() => setAuditModalOpen(false)}
+        type={auditModalType}
+        showToast={showToast}
+        onSelectRoute={handleSelectOffer}
       />
 
       {/* Global Toast Feedback Notification */}
       {toastMessage && (
-        <div className="fixed bottom-16 md:bottom-6 right-4 left-4 md:left-auto md:max-w-md z-50 bg-slate-900 border border-amber-400/40 text-slate-100 text-xs sm:text-sm font-medium px-4 py-3 rounded-xl shadow-2xl shadow-black/80 flex items-center gap-3 animate-in fade-in slide-in-from-bottom-2 duration-200">
-          <span className="w-2 h-2 rounded-full bg-amber-400 shrink-0" />
+        <div className="fixed bottom-16 md:bottom-6 right-4 left-4 md:left-auto md:max-w-md z-50 bg-[#0c162c] border border-[#4F5DFF]/40 text-slate-100 text-xs sm:text-sm font-medium px-4 py-3 rounded-xl shadow-2xl shadow-black/80 flex items-center gap-3 animate-in fade-in slide-in-from-bottom-2 duration-200">
+          <span className="w-2 h-2 rounded-full bg-[#2DD4BF] shrink-0" />
           <span className="flex-1">{toastMessage}</span>
         </div>
       )}
