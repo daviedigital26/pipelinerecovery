@@ -3,10 +3,10 @@ import { ChevronDown, HelpCircle, ArrowRight } from 'lucide-react';
 import { faqs } from '../data/samples';
 
 interface FaqProps {
-  onOpenAudit: () => void;
+  onOpenTrial: () => void;
 }
 
-export function Faq({ onOpenAudit }: FaqProps) {
+export function Faq({ onOpenTrial }: FaqProps) {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
 
   const toggle = (index: number) => {
@@ -14,20 +14,20 @@ export function Faq({ onOpenAudit }: FaqProps) {
   };
 
   return (
-    <section id="faq" className="py-16 lg:py-24 bg-[#0a1428] border-b border-slate-800/80">
+    <section id="faq" className="py-16 lg:py-24 bg-[#0d1424] border-b border-slate-800/80">
       <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
         
         {/* Section Headline */}
         <div className="text-center space-y-4 mb-12">
-          <div className="inline-flex items-center gap-2 text-xs font-bold text-[#4F5DFF] bg-[#4F5DFF]/10 border border-[#4F5DFF]/20 px-3.5 py-1 rounded-full uppercase tracking-wider">
+          <div className="inline-flex items-center gap-2 text-xs font-bold text-amber-300 bg-amber-500/10 border border-amber-500/20 px-3.5 py-1 rounded-full">
             <HelpCircle className="w-3.5 h-3.5" />
-            <span>Shared FAQ</span>
+            <span>Got Questions?</span>
           </div>
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white tracking-tight">
-            Good Questions. Clear Answers.
+            Frequently Asked Questions
           </h2>
           <p className="text-base sm:text-lg text-slate-300">
-            Straightforward details on how our reviews, Blueprint, and CRM follow-up systems work.
+            Clear, practical answers about our pipeline recovery methods, blueprints, and implementation.
           </p>
         </div>
 
@@ -38,7 +38,7 @@ export function Faq({ onOpenAudit }: FaqProps) {
             return (
               <div
                 key={index}
-                className="bg-[#081020] rounded-2xl border border-slate-800 overflow-hidden transition-all duration-200 hover:border-slate-700"
+                className="bg-slate-900/90 rounded-2xl border border-slate-800 overflow-hidden transition-all duration-200"
               >
                 <button
                   onClick={() => toggle(index)}
@@ -49,7 +49,7 @@ export function Faq({ onOpenAudit }: FaqProps) {
                     {faq.q}
                   </span>
                   <ChevronDown
-                    className={`w-4 h-4 text-[#4F5DFF] shrink-0 transition-transform duration-200 ${
+                    className={`w-4 h-4 text-amber-400 shrink-0 transition-transform duration-200 ${
                       isOpen ? 'rotate-180' : ''
                     }`}
                   />
@@ -65,18 +65,20 @@ export function Faq({ onOpenAudit }: FaqProps) {
           })}
         </div>
 
-        {/* Bottom CTA Block */}
-        <div className="mt-12 text-center space-y-3">
-          <p className="text-sm text-slate-400">
-            Have a question about your specific CRM or team structure?
+        {/* Help CTA Box */}
+        <div className="mt-12 text-center bg-slate-900/60 border border-slate-800 rounded-2xl p-6 sm:p-8 space-y-3">
+          <h3 className="text-lg font-bold text-white">Want us to take a look at your database?</h3>
+          <p className="text-xs sm:text-sm text-slate-300 max-w-lg mx-auto">
+            Start with the Free Pipeline Snapshot. We will diagnose where contacts are stalling with zero obligation.
           </p>
-          <button
-            onClick={onOpenAudit}
-            className="inline-flex items-center gap-2 px-6 py-3.5 text-xs font-bold text-white bg-[#4F5DFF] hover:bg-[#4350e6] rounded-xl transition-all shadow-md cursor-pointer"
-          >
-            <span>Get My Free Pipeline Audit</span>
-            <ArrowRight className="w-4 h-4" />
-          </button>
+          <div className="pt-2">
+            <button
+              onClick={onOpenTrial}
+              className="inline-flex items-center gap-2 px-6 py-3 bg-amber-400 hover:bg-amber-300 text-slate-950 font-bold text-xs rounded-xl shadow-md transition-all cursor-pointer"
+            >
+              <span>Get My Free Pipeline Snapshot →</span>
+            </button>
+          </div>
         </div>
 
       </div>

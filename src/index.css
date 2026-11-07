@@ -84,3 +84,10 @@
   background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.22), transparent);
   animation: shimmerSweep 3.5s infinite;
 }
+
+/* Layout & Mobile Diagnostic Tool Grids */
+@media (max-width: 768px) {
+  .interactive-tool-grid {
+    grid-template-columns: 1fr !important;
+  }
+}

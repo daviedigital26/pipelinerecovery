@@ -1,74 +1,46 @@
-import { ArrowRight, Check, X, Shield, Sparkles } from 'lucide-react';
+import { ArrowRight, Check, X, Sparkles } from 'lucide-react';
+import { comparisonPoints } from '../data/samples';
 
 interface HowItWorksProps {
-  onOpenAudit: () => void;
+  onOpenTrial?: () => void;
+  onOpenAudit?: () => void;
 }
 
-export function HowItWorks({ onOpenAudit }: HowItWorksProps) {
+export function HowItWorks({ onOpenTrial, onOpenAudit }: HowItWorksProps) {
+  const handleOpen = onOpenAudit || onOpenTrial || (() => {});
   const steps = [
     {
       number: '1',
-      title: 'Choose a Free Review',
-      text: 'Have old leads or missed follow-up? Start with the Free Pipeline Recovery Audit. Have a stale listing or a price change? Start with the Free Listing Relaunch Review.',
-      badge: 'Zero Obligation'
+      title: 'Free Diagnostic Audit',
+      text: 'We identify where leads go quiet and quantify dormant commission.',
     },
     {
       number: '2',
-      title: 'Review What Is Happening',
-      text: 'We look at your answers and talk through the gap. We explain what we know from your CRM records, what is an estimate, and what still needs proof.',
-      badge: 'Diagnostic Call'
+      title: 'The $1,750 Custom Blueprint',
+      text: 'We construct your bespoke re-engagement sequences and CRM stage definitions.',
     },
     {
       number: '3',
-      title: 'Agree on the Next Step',
-      text: 'If a deeper plan fits, the Revenue Architecture Blueprint is $1,750. It maps the lead groups, follow-up, owners, and tasks. Paid setup uses a separate custom quote.',
-      badge: 'Clear Written Scope'
-    },
-  ];
-
-  const comparisonPoints = [
-    {
-      feature: 'Primary Philosophy',
-      oldWay: 'Buy more expensive leads while existing database decays quietly',
-      realeWay: 'Re-engage the quiet leads and sphere you already paid to acquire',
-    },
-    {
-      feature: 'CRM & Software',
-      oldWay: 'Forces migration to proprietary software or new unneeded platforms',
-      realeWay: 'Works 100% inside your existing CRM (Follow Up Boss, kvCORE, etc.)',
-    },
-    {
-      feature: 'Messaging Approach',
-      oldWay: 'Impersonal, generic marketing blasts that trigger unsubscribes',
-      realeWay: 'Short, friendly questions written at a 6th-grade reading level',
-    },
-    {
-      feature: 'Reply Accountability',
-      oldWay: 'Inbound replies land in a shared team inbox with no assigned owner',
-      realeWay: 'Every reply routed to a specific agent with an immediate task date',
-    },
-    {
-      feature: 'Commitment & Terms',
-      oldWay: '6 to 12-month agency retainer contracts ($1,500–$3,000/month)',
-      realeWay: 'Free review → $1,750 Blueprint → custom quoted setup. No contracts.',
+      title: 'Implementation & Deal Recovery',
+      text: 'We execute seamlessly in-house using our turn-key playbooks, or train your team.',
     },
   ];
 
   return (
-    <section id="how-it-works" className="py-16 lg:py-24 bg-[#0a1428] border-b border-slate-800/80">
+    <section id="how-it-works" className="py-16 lg:py-24 bg-[#0d1424] border-b border-slate-800/80">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         
         {/* Section Headline */}
         <div className="max-w-3xl mx-auto text-center space-y-4 mb-16">
-          <div className="inline-flex items-center gap-2 text-xs font-bold text-[#4F5DFF] bg-[#4F5DFF]/10 border border-[#4F5DFF]/20 px-3.5 py-1 rounded-full uppercase tracking-wider">
+          <div className="inline-flex items-center gap-2 text-xs font-bold text-amber-300 bg-amber-500/10 border border-amber-500/20 px-3.5 py-1 rounded-full">
             <Sparkles className="w-3.5 h-3.5" />
-            <span>How It Works</span>
+            <span>Proven Process</span>
           </div>
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white tracking-tight">
-            Start Small. Fix the Next Step.
+            How We Revive Your Pipeline
           </h2>
           <p className="text-base sm:text-lg text-slate-300">
-            First, we review the gap. Then we agree on a plan. Paid setup comes after a clear scope and fee.
+            A clear, consultative framework designed to convert dormant contacts into active transactions without burning goodwill.
           </p>
         </div>
 
@@ -77,81 +49,77 @@ export function HowItWorks({ onOpenAudit }: HowItWorksProps) {
           {steps.map((step) => (
             <div
               key={step.number}
-              className="bg-[#081020] rounded-2xl border border-slate-800 p-7 relative hover:border-[#4F5DFF]/50 transition-colors shadow-lg space-y-4"
+              className="bg-slate-900/90 rounded-2xl border border-slate-800 p-7 sm:p-8 relative hover:border-amber-400/40 transition-colors shadow-lg space-y-4 flex flex-col justify-between"
             >
-              <div className="flex items-center justify-between">
-                <div className="w-12 h-12 rounded-xl bg-[#4F5DFF] text-white font-extrabold text-xl flex items-center justify-center shadow-md shadow-[#4F5DFF]/25">
+              <div className="space-y-4">
+                <div className="w-12 h-12 rounded-xl bg-amber-400 text-slate-950 font-black font-display text-xl flex items-center justify-center shadow-md shadow-amber-400/20">
                   {step.number}
                 </div>
-                <span className="text-[11px] font-semibold text-[#2DD4BF] bg-[#2DD4BF]/10 px-2.5 py-0.5 rounded">
-                  {step.badge}
-                </span>
+
+                <h3 className="text-xl font-bold text-white">
+                  {step.title}
+                </h3>
+
+                <p className="text-sm text-slate-300 leading-relaxed font-normal">
+                  {step.text}
+                </p>
               </div>
 
-              <h3 className="text-xl font-bold text-white">
-                {step.title}
-              </h3>
-
-              <p className="text-sm text-slate-300 leading-relaxed">
-                {step.text}
-              </p>
+              <div className="pt-4 border-t border-slate-800/80 text-[11px] font-mono text-amber-400 font-semibold">
+                {step.number === '1' && '100% Free · 24-Hour Review'}
+                {step.number === '2' && 'Fixed $1,750 Strategic Asset'}
+                {step.number === '3' && 'Internal or Separately Quoted'}
+              </div>
             </div>
           ))}
         </div>
 
-        {/* Control Box */}
-        <div className="mt-10 bg-[#081020] rounded-2xl border border-slate-800 p-6 max-w-4xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div className="flex items-center gap-3 text-left">
-            <div className="w-10 h-10 rounded-xl bg-[#2DD4BF]/10 border border-[#2DD4BF]/20 flex items-center justify-center text-[#2DD4BF] shrink-0">
-              <Shield className="w-5 h-5" />
-            </div>
-            <div>
-              <h4 className="text-sm font-bold text-white">You Keep Control Every Step of the Way</h4>
-              <p className="text-xs text-slate-300">You keep your CRM and client ties. You approve all messages before launch.</p>
-            </div>
-          </div>
-          <button
-            onClick={onOpenAudit}
-            className="px-5 py-2.5 bg-[#4F5DFF] hover:bg-[#4350e6] text-white font-bold text-xs rounded-xl shadow-md transition-all whitespace-nowrap cursor-pointer"
-          >
-            Get My Free Pipeline Audit
-          </button>
-        </div>
-
-        {/* Agency vs. Reale Comparison Table */}
-        <div className="mt-16 pt-12 border-t border-slate-800/80">
-          <div className="text-center space-y-3 mb-10">
+        {/* Comparison Table: Buying New Leads vs. Recovering What You Have */}
+        <div className="mt-20 max-w-4xl mx-auto">
+          <div className="text-center space-y-2 mb-8">
             <h3 className="text-2xl sm:text-3xl font-extrabold text-white">
-              Buying More Leads vs. Working What You Have
+              Why Top Producers Stop Buying More Leads
             </h3>
-            <p className="text-sm text-slate-300">
-              Why established teams choose systemized follow-up over perpetual ad spend.
+            <p className="text-sm text-slate-400">
+              Compare the endless treadmill of cold ad leads with systematic revenue architecture:
             </p>
           </div>
 
-          <div className="max-w-4xl mx-auto overflow-hidden rounded-2xl border border-slate-800 bg-[#081020] shadow-2xl">
-            <div className="grid grid-cols-12 bg-slate-900 border-b border-slate-800 text-xs font-bold uppercase tracking-wider py-4 px-6 text-slate-300">
-              <div className="col-span-4 sm:col-span-3">Area</div>
-              <div className="col-span-4 sm:col-span-4 text-slate-400">The Old Way</div>
-              <div className="col-span-4 sm:col-span-5 text-[#4F5DFF]">Reale Revenue Systems</div>
+          <div className="overflow-hidden rounded-2xl border border-slate-800 bg-slate-900/80 shadow-2xl">
+            <div className="grid grid-cols-12 bg-slate-950 p-4 border-b border-slate-800 text-xs font-bold uppercase tracking-wider text-slate-400">
+              <div className="col-span-5 sm:col-span-5">Strategic Dimension</div>
+              <div className="col-span-4 sm:col-span-4 text-slate-400">The Trap: Buying More Cold Leads</div>
+              <div className="col-span-3 sm:col-span-3 text-amber-400 font-extrabold">Our Recovery Architecture</div>
             </div>
 
-            <div className="divide-y divide-slate-800 text-xs sm:text-sm">
-              {comparisonPoints.map((row, idx) => (
-                <div key={idx} className="grid grid-cols-12 py-4 px-6 items-center gap-2 hover:bg-slate-900/40 transition-colors">
-                  <div className="col-span-4 sm:col-span-3 font-semibold text-white">
-                    {row.feature}
+            <div className="divide-y divide-slate-800/80 text-sm">
+              {comparisonPoints.map((item, idx) => (
+                <div key={idx} className="grid grid-cols-12 p-4 items-center gap-2 hover:bg-slate-800/30 transition-colors">
+                  <div className="col-span-5 sm:col-span-5 font-semibold text-slate-200 text-xs sm:text-sm">
+                    {item.feature}
                   </div>
-                  <div className="col-span-4 sm:col-span-4 text-slate-400 flex items-start gap-1.5">
-                    <X className="w-4 h-4 text-rose-400 shrink-0 mt-0.5" />
-                    <span>{row.oldWay}</span>
+                  <div className="col-span-4 sm:col-span-4 text-xs text-rose-300/90 flex items-start gap-1.5 leading-relaxed">
+                    <X className="w-3.5 h-3.5 text-rose-400 shrink-0 mt-0.5" />
+                    <span>{item.others}</span>
                   </div>
-                  <div className="col-span-4 sm:col-span-5 text-slate-200 font-medium flex items-start gap-1.5">
-                    <Check className="w-4 h-4 text-[#2DD4BF] shrink-0 mt-0.5" />
-                    <span>{row.realeWay}</span>
+                  <div className="col-span-3 sm:col-span-3 text-xs sm:text-sm font-medium text-emerald-300 flex items-start gap-1.5 leading-relaxed">
+                    <Check className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
+                    <span>{item.recovery}</span>
                   </div>
                 </div>
               ))}
+            </div>
+
+            <div className="p-4 bg-slate-950/80 border-t border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-3">
+              <span className="text-xs text-slate-300 text-center sm:text-left">
+                Ready to find the hidden transactions in your database?
+              </span>
+              <button
+                onClick={handleOpen}
+                className="w-full sm:w-auto px-5 py-2.5 bg-amber-400 hover:bg-amber-300 text-slate-950 text-xs font-bold rounded-xl transition-all flex items-center justify-center gap-1.5 cursor-pointer shadow-md"
+              >
+                <span>Get My Free Pipeline Snapshot →</span>
+              </button>
             </div>
           </div>
         </div>

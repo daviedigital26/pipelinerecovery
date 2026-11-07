@@ -1,195 +1,196 @@
-import { ArrowRight, Check, ShieldCheck, Sparkles, FileText, Tag } from 'lucide-react';
+import { ArrowRight, Check, ShieldCheck, Sparkles, Building2, Wrench } from 'lucide-react';
 
 interface PricingProps {
-  onOpenAudit: (type?: 'pipeline' | 'listing') => void;
-  onSelectOffer?: (slug: string) => void;
+  onOpenTrial: () => void;
 }
 
-export function Pricing({ onOpenAudit, onSelectOffer }: PricingProps) {
+export function Pricing({ onOpenTrial }: PricingProps) {
   return (
-    <section id="pricing" className="py-16 lg:py-24 border-b border-slate-800/80 bg-[#081020]">
+    <section id="pricing" className="py-16 lg:py-24 border-b border-slate-800/80">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         
         {/* Section Headline */}
-        <div className="max-w-3xl mx-auto text-center space-y-4 mb-10">
-          <div className="inline-flex items-center gap-2 text-xs font-bold text-[#4F5DFF] bg-[#4F5DFF]/10 border border-[#4F5DFF]/20 px-3.5 py-1 rounded-full uppercase tracking-wider">
+        <div className="max-w-3xl mx-auto text-center space-y-4 mb-12">
+          <div className="inline-flex items-center gap-2 text-xs font-bold text-amber-300 bg-amber-500/10 border border-amber-500/20 px-3.5 py-1 rounded-full">
             <Sparkles className="w-3.5 h-3.5" />
-            <span>Commercial Offer Structure</span>
+            <span>Transparent Offer Structure</span>
           </div>
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white tracking-tight">
-            Clear Offers. Transparent Scope.
+            Our Simple 3-Step Pricing
           </h2>
           <p className="text-base sm:text-lg text-slate-300">
-            Start with a free human review. Move to a written Blueprint when you need a deeper plan. Setup and launch work are always priced separately.
+            Start with a free snapshot, step up to the complete $1,750 Blueprint, or partner with us for full-service implementation.
           </p>
-
-          {/* Comparison summary row */}
-          <div className="p-3.5 bg-[#0c162c] border border-slate-800 rounded-xl text-xs text-slate-300 max-w-2xl mx-auto mt-4">
-            The Free Audit is a brief human check to find your first gap. The $1,750 Blueprint delivers the full written recovery roadmap for your team.
-          </div>
         </div>
 
-        {/* Pricing Cards */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-4xl mx-auto items-stretch pt-2">
+        {/* 3 Pricing Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto items-stretch pt-4">
           
-          {/* Card 1: Free Pipeline Recovery Audit */}
-          <div className="bg-[#0c162c] rounded-3xl border border-slate-800 hover:border-[#4F5DFF]/40 p-8 flex flex-col justify-between transition-colors shadow-xl relative">
-            <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-slate-800 text-slate-300 text-[11px] font-bold uppercase tracking-wider px-3.5 py-0.5 rounded-full border border-slate-700">
-              Entry Review
-            </div>
-
+          {/* Card 1: Free Pipeline Snapshot */}
+          <div className="bg-slate-900/90 rounded-3xl border border-slate-800 p-7 sm:p-8 flex flex-col justify-between hover:border-slate-700 transition-colors shadow-xl relative">
             <div className="space-y-6">
               <div>
-                <h3 className="text-2xl font-bold text-white">Free Pipeline Recovery Audit</h3>
-                <p className="text-xs text-slate-300 mt-1 font-semibold text-[#2DD4BF]">
-                  Find where follow-up gets stuck in your database.
+                <span className="text-xs font-bold text-emerald-400 uppercase tracking-wider font-mono">
+                  Step 01 · Diagnostic
+                </span>
+                <h3 className="text-2xl font-bold text-white mt-1">Free Pipeline Snapshot</h3>
+                <p className="text-xs text-slate-400 mt-1">
+                  Find missed follow-ups and discover where deals are stalling in your current CRM.
                 </p>
               </div>
 
-              <div className="flex items-baseline gap-2">
-                <span className="text-4xl font-black text-white font-mono">
-                  $0
-                </span>
-                <span className="text-sm font-medium text-slate-400">/ brief human review</span>
+              <div className="flex items-baseline gap-1">
+                <span className="text-4xl font-black text-white font-mono">$0</span>
+                <span className="text-xs font-medium text-slate-400 ml-1">/ 100% Free</span>
+              </div>
+
+              <div className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
+                What you receive:
               </div>
 
               <ul className="space-y-3 text-xs text-slate-200">
-                <li className="flex items-center gap-2.5 font-medium text-white">
-                  <Check className="w-4 h-4 text-[#2DD4BF] shrink-0" />
-                  <span>Up to three follow-up gaps to check in your CRM</span>
+                <li className="flex items-start gap-2.5 font-medium text-white">
+                  <Check className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
+                  <span><strong>Pipeline Leak Audit:</strong> Identify missed follow-ups &amp; quantify dormant leads</span>
                 </li>
-                <li className="flex items-center gap-2.5">
-                  <Check className="w-4 h-4 text-[#2DD4BF] shrink-0" />
-                  <span>One specific lead group worth a closer look</span>
+                <li className="flex items-start gap-2.5">
+                  <Check className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
+                  <span>Actionable 3-point immediate recovery recommendations</span>
                 </li>
-                <li className="flex items-center gap-2.5">
-                  <Check className="w-4 h-4 text-[#2DD4BF] shrink-0" />
-                  <span>A clear, actionable next step recommended by David Reale</span>
-                </li>
-                <li className="flex items-center gap-2.5">
-                  <Check className="w-4 h-4 text-[#2DD4BF] shrink-0" />
-                  <span>No payment details or credit card required</span>
-                </li>
-                <li className="flex items-center gap-2.5">
-                  <Check className="w-4 h-4 text-[#2DD4BF] shrink-0" />
-                  <span>No need to upload or share your contact list</span>
-                </li>
-                <li className="flex items-center gap-2.5 text-slate-400">
-                  <span className="w-4 h-4 text-center shrink-0 text-slate-500">&bull;</span>
-                  <span>Does not include full CRM cleanup or campaign setup</span>
+                <li className="flex items-start gap-2.5">
+                  <Check className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
+                  <span>No credit card, software login, or long-term commitment</span>
                 </li>
               </ul>
             </div>
 
             <div className="pt-8 space-y-2">
               <button
-                onClick={() => onOpenAudit('pipeline')}
-                className="w-full py-3.5 px-4 bg-slate-800 hover:bg-slate-700 text-white font-bold text-xs rounded-xl transition-all border border-slate-700 flex items-center justify-center gap-2 cursor-pointer"
+                onClick={onOpenTrial}
+                className="w-full py-3.5 px-4 bg-slate-800 hover:bg-slate-700 text-white font-bold text-xs rounded-xl transition-all flex items-center justify-center gap-2 cursor-pointer border border-slate-700"
               >
-                <span>Get My Free Pipeline Audit</span>
-                <ArrowRight className="w-4 h-4" />
+                <span>Get My Free Snapshot →</span>
               </button>
               <p className="text-[11px] text-center text-slate-400">
-                No account or credit card &bull; Brief human review
+                Delivered in 24 hours · Confidential review
               </p>
             </div>
           </div>
 
-          {/* Card 2: Revenue Architecture Blueprint */}
-          <div className="bg-gradient-to-b from-[#0e1a38] via-[#0c162c] to-[#081020] rounded-3xl border-2 border-[#4F5DFF] p-8 flex flex-col justify-between shadow-2xl relative">
-            <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-[#4F5DFF] text-white text-[11px] font-black uppercase tracking-wider px-3.5 py-0.5 rounded-full shadow-md">
-              Comprehensive Written Plan
+          {/* Card 2: $1,750 Recovery System - Highlighted */}
+          <div className="bg-gradient-to-b from-slate-900 via-slate-900 to-[#18233c] rounded-3xl border-2 border-amber-400 p-7 sm:p-8 flex flex-col justify-between shadow-2xl relative">
+            <div className="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-amber-400 text-slate-950 text-[10px] font-black uppercase tracking-wider px-3.5 py-0.5 rounded-full shadow-md">
+              Core Strategic Asset
             </div>
 
             <div className="space-y-6">
               <div>
-                <h3 className="text-2xl font-bold text-white">Revenue Architecture Blueprint</h3>
-                <p className="text-xs text-slate-300 mt-1 font-semibold text-[#2DD4BF]">
-                  A complete written recovery plan for your team.
+                <span className="text-xs font-bold text-amber-400 uppercase tracking-wider font-mono">
+                  Step 02 · Strategic Roadmap
+                </span>
+                <h3 className="text-2xl font-bold text-white mt-1">$1,750 Recovery System</h3>
+                <p className="text-xs text-slate-300 mt-1 font-semibold text-emerald-400">
+                  A complete operational asset you own forever.
                 </p>
               </div>
 
-              <div className="flex items-baseline gap-2">
-                <span className="text-4xl font-black text-[#4F5DFF] font-mono">
-                  $1,750
-                </span>
-                <span className="text-sm font-medium text-slate-400">one-time agreed scope</span>
+              <div>
+                <div className="flex items-baseline gap-1">
+                  <span className="text-4xl font-black text-amber-400 font-mono">$1,750</span>
+                  <span className="text-xs font-medium text-slate-400 ml-1">one-time fixed</span>
+                </div>
+                <p className="text-xs text-amber-300 font-medium mt-1">
+                  Includes custom sequences, CRM tags, and team SOPs.
+                </p>
+              </div>
+
+              <div className="text-xs font-semibold text-slate-300 uppercase tracking-wider">
+                What you receive:
               </div>
 
               <ul className="space-y-3 text-xs text-slate-200">
-                <li className="flex items-center gap-2.5 font-medium text-white">
-                  <Check className="w-4 h-4 text-[#2DD4BF] shrink-0" />
-                  <span>Full review of agreed CRM lead sources, tasks &amp; notes</span>
+                <li className="flex items-start gap-2.5 font-medium text-white">
+                  <Check className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
+                  <span><strong>Custom Re-Engagement Sequences:</strong> Multi-touch SMS, call, email, and video scripts</span>
                 </li>
-                <li className="flex items-center gap-2.5 font-medium text-white">
-                  <Check className="w-4 h-4 text-[#2DD4BF] shrink-0" />
-                  <span>Complete map of the 5 recovery stages for your database</span>
+                <li className="flex items-start gap-2.5">
+                  <Check className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
+                  <span><strong>CRM Pipeline Stage Architecture:</strong> Standardized stages, triggers &amp; SLAs</span>
                 </li>
-                <li className="flex items-center gap-2.5">
-                  <Check className="w-4 h-4 text-[#2DD4BF] shrink-0" />
-                  <span>Targeted lead groups with clear reasons to reach back out</span>
+                <li className="flex items-start gap-2.5">
+                  <Check className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
+                  <span><strong>Dormant Lead Triage Protocol:</strong> Rules to isolate high-intent contacts</span>
                 </li>
-                <li className="flex items-center gap-2.5">
-                  <Check className="w-4 h-4 text-[#2DD4BF] shrink-0" />
-                  <span>Custom follow-up messages tailored for your approval</span>
-                </li>
-                <li className="flex items-center gap-2.5">
-                  <Check className="w-4 h-4 text-[#2DD4BF] shrink-0" />
-                  <span>Reply owners, CRM task schedules, and routing SLAs</span>
-                </li>
-                <li className="flex items-center gap-2.5">
-                  <Check className="w-4 h-4 text-[#2DD4BF] shrink-0" />
-                  <span>Written findings report and personalized team walkthrough</span>
-                </li>
-                <li className="flex items-center gap-2.5 text-slate-400">
-                  <span className="w-4 h-4 text-center shrink-0 text-slate-500">&bull;</span>
-                  <span>Setup and live launch work quoted separately</span>
+                <li className="flex items-start gap-2.5">
+                  <Check className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
+                  <span><strong>Team Accountability Playbook:</strong> Daily checklists for agents and ISAs</span>
                 </li>
               </ul>
             </div>
 
             <div className="pt-8 space-y-2">
               <button
-                onClick={() => onSelectOffer?.('revenue-architecture-blueprint')}
-                className="w-full py-3.5 px-4 bg-[#4F5DFF] hover:bg-[#4350e6] text-white font-extrabold text-xs rounded-xl transition-all shadow-lg shadow-[#4F5DFF]/25 animate-cta-glow shimmer-badge flex items-center justify-center gap-2 cursor-pointer hover:scale-[1.01]"
+                onClick={onOpenTrial}
+                className="w-full py-3.5 px-4 bg-amber-400 hover:bg-amber-300 text-slate-950 font-extrabold text-xs rounded-xl transition-all shadow-lg animate-cta-glow shimmer-badge flex items-center justify-center gap-2 cursor-pointer hover:scale-[1.01]"
               >
-                <span className="relative z-10">Apply for a Blueprint Review</span>
-                <ArrowRight className="w-4 h-4 relative z-10" />
+                <span className="relative z-10">Request Recovery System →</span>
               </button>
               <p className="text-[11px] text-center text-slate-400">
-                Application review &bull; Written agreement required
+                One-time investment · You own the system forever
               </p>
             </div>
           </div>
 
-        </div>
+          {/* Card 3: Pipeline Recovery Implementation */}
+          <div className="bg-slate-900/90 rounded-3xl border border-slate-800 p-7 sm:p-8 flex flex-col justify-between hover:border-slate-700 transition-colors shadow-xl relative">
+            <div className="space-y-6">
+              <div>
+                <span className="text-xs font-bold text-sky-400 uppercase tracking-wider font-mono">
+                  Step 03 · Done-For-You Execution
+                </span>
+                <h3 className="text-2xl font-bold text-white mt-1">Pipeline Recovery Implementation</h3>
+                <p className="text-xs text-slate-400 mt-1">
+                  Full technical rollout: CRM data clean-up, automated sequence wiring, and team launch management.
+                </p>
+              </div>
 
-        {/* Dedicated Price Drop Pro Callout Box */}
-        <div className="mt-12 max-w-4xl mx-auto bg-[#0c162c] rounded-2xl border border-slate-800 p-6 sm:p-8 flex flex-col md:flex-row items-center justify-between gap-6 shadow-xl">
-          <div className="space-y-2 text-left">
-            <div className="flex items-center gap-2 text-xs font-bold text-[#4F5DFF] uppercase tracking-wider">
-              <Tag className="w-3.5 h-3.5" />
-              <span>For Listings Needing Fresh Traction</span>
+              <div className="flex items-baseline gap-1">
+                <span className="text-2xl sm:text-3xl font-black text-white font-mono">Separately Quoted</span>
+              </div>
+
+              <div className="text-xs font-semibold text-slate-400 uppercase tracking-wider">
+                Full technical rollout:
+              </div>
+
+              <ul className="space-y-3 text-xs text-slate-200">
+                <li className="flex items-start gap-2.5 font-medium text-white">
+                  <Check className="w-4 h-4 text-sky-400 shrink-0 mt-0.5" />
+                  <span><strong>Database Cleansing &amp; Tagging:</strong> Clean up contacts across your CRM</span>
+                </li>
+                <li className="flex items-start gap-2.5 font-medium text-white">
+                  <Check className="w-4 h-4 text-sky-400 shrink-0 mt-0.5" />
+                  <span><strong>Sequence Wiring:</strong> Direct technical setup of SMS, task, and email cadences</span>
+                </li>
+                <li className="flex items-start gap-2.5">
+                  <Check className="w-4 h-4 text-sky-400 shrink-0 mt-0.5" />
+                  <span>Live agent &amp; ISA coaching on handling revived buyer and seller inquiries</span>
+                </li>
+              </ul>
             </div>
-            <h4 className="text-xl font-bold text-white">Price Drop Pro™ — Free Listing Relaunch Review</h4>
-            <p className="text-xs text-slate-300 max-w-xl leading-relaxed">
-              Have an active listing that went quiet or an upcoming price change? Share public MLS details for a free review of your message and follow-up plan. Paid relaunch execution is quoted separately based on assets, channels, and timing needed.
-            </p>
-          </div>
-          <button
-            onClick={() => onOpenAudit('listing')}
-            className="px-6 py-3.5 bg-slate-800 hover:bg-slate-700 text-white font-bold text-xs rounded-xl border border-slate-700 whitespace-nowrap cursor-pointer transition-colors"
-          >
-            Get My Free Listing Review
-          </button>
-        </div>
 
-        {/* Clean Guarantee and Transparency Block */}
-        <div className="mt-10 text-center max-w-2xl mx-auto space-y-2">
-          <div className="flex items-center justify-center gap-2 text-xs text-slate-300">
-            <ShieldCheck className="w-4 h-4 text-[#2DD4BF]" />
-            <span><strong>Transparent Commercial Terms:</strong> No subscriptions. No automatic billing. You approve all work in writing.</span>
+            <div className="pt-8 space-y-2">
+              <button
+                onClick={onOpenTrial}
+                className="w-full py-3.5 px-4 bg-slate-800 hover:bg-slate-700 text-white font-bold text-xs rounded-xl transition-all flex items-center justify-center gap-2 cursor-pointer border border-slate-700"
+              >
+                <span>Request Implementation →</span>
+              </button>
+              <p className="text-[11px] text-center text-slate-400">
+                Custom proposal based on database size
+              </p>
+            </div>
           </div>
+
         </div>
 
       </div>

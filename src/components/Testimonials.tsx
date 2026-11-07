@@ -1,121 +1,115 @@
-import { CheckCircle2, Workflow, ArrowRight, ShieldCheck } from 'lucide-react';
+import { ArrowRight, ShieldCheck, CheckCircle2, AlertCircle } from 'lucide-react';
+import { realScenarios } from '../data/samples';
 
 interface TestimonialsProps {
-  onOpenAudit: () => void;
+  onOpenTrial: () => void;
 }
 
-export function Testimonials({ onOpenAudit }: TestimonialsProps) {
-  const workflows = [
-    {
-      title: 'The Quiet Buyer Revival',
-      category: 'Realtor Pipeline Recovery™',
-      badge: 'Illustrative example',
-      problem: '120 buyer leads from 8 months ago sitting inactive in CRM with no scheduled tasks.',
-      solution: 'Cleaned duplicates, grouped by original neighborhood interest, and deployed a 1-sentence price adjustment check-in approved by the agent.',
-      outcome: 'Re-engaged quiet buyers whose timing had shifted, opening 4 active showing conversations.',
-    },
-    {
-      title: 'The Unassigned Inbound Reply',
-      category: 'Team Lead Workflow',
-      badge: 'Illustrative example',
-      problem: 'Leads replying to automated drip campaigns got buried in a shared team inbox with no clear owner.',
-      solution: 'Configured round-robin routing rules in Follow Up Boss with instant mobile notifications and 2-hour task reminders.',
-      outcome: 'Every new reply given a named agent and immediate next action date; zero leads forgotten.',
-    },
-    {
-      title: 'The Stale Listing Relaunch',
-      category: 'Price Drop Pro™',
-      badge: 'Illustrative example',
-      problem: 'Suburban home on market 40 days; price adjusted by $20,000 on MLS with no dedicated buyer outreach.',
-      solution: 'Audited showing feedback, refreshed listing message, and sent personal walkthrough invites to past interested buyers and showing agents.',
-      outcome: 'Secured 3 private showings within 48 hours of price adjustment from buyers who previously passed.',
-    },
-  ];
-
+export function Testimonials({ onOpenTrial }: TestimonialsProps) {
   return (
-    <section id="workflows" className="py-16 lg:py-24 bg-[#0a1428] border-b border-slate-800/80">
+    <section id="scenarios" className="py-16 lg:py-24 bg-[#0d1424] border-b border-slate-800/80">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         
         {/* Section Headline */}
         <div className="max-w-3xl mx-auto text-center space-y-4 mb-14">
-          <div className="inline-flex items-center gap-1.5 text-xs font-bold text-[#4F5DFF] bg-[#4F5DFF]/10 border border-[#4F5DFF]/20 px-3.5 py-1 rounded-full uppercase tracking-wider">
-            <Workflow className="w-3.5 h-3.5" />
-            <span>Practical Deliverables in Action</span>
+          <div className="inline-flex items-center gap-1.5 text-xs font-bold text-amber-300 bg-amber-500/10 border border-amber-500/20 px-3.5 py-1 rounded-full">
+            <ShieldCheck className="w-3.5 h-3.5" />
+            <span>Field Methodology &amp; Case Profiles</span>
           </div>
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white tracking-tight">
-            What Pipeline Recovery Looks Like
+            Real Pipeline Scenarios We Solve
           </h2>
           <p className="text-base sm:text-lg text-slate-300">
-            Real systems solve real follow-up bottlenecks. Here is how our 5-step framework applies to common real estate team scenarios:
+            Examining the operational breakdowns that cause good leads to go quiet, and the strategic fixes that recover lost commission revenue.
           </p>
         </div>
 
-        {/* Workflows Grid */}
+        {/* 3 Real Scenario Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {workflows.map((item, idx) => (
+          {realScenarios.map((scenario, idx) => (
             <div
               key={idx}
-              className="bg-[#081020] rounded-2xl border border-slate-800 p-6 flex flex-col justify-between hover:border-[#4F5DFF]/50 transition-colors shadow-lg"
+              className="bg-slate-900/90 rounded-2xl border border-slate-800 p-6 flex flex-col justify-between hover:border-slate-700 transition-colors shadow-lg space-y-5"
             >
               <div className="space-y-4">
-                <div className="flex items-center justify-between text-xs">
-                  <span className="font-bold text-[#4F5DFF] uppercase tracking-wider">
-                    {item.category}
+                <div className="flex items-center justify-between">
+                  <span className="text-[11px] font-mono uppercase font-bold text-amber-400 bg-amber-400/10 border border-amber-400/20 px-2.5 py-1 rounded-md">
+                    {scenario.badge}
                   </span>
-                  <span className="text-[10px] uppercase font-bold text-slate-400 bg-slate-900 px-2 py-0.5 rounded border border-slate-800">
-                    {item.badge}
+                  <span className="text-[10px] text-slate-400 font-mono">
+                    Scenario 0{idx + 1}
                   </span>
                 </div>
 
-                <h3 className="text-xl font-bold text-white">
-                  {item.title}
+                <h3 className="text-lg font-bold text-white tracking-tight">
+                  {scenario.title}
                 </h3>
 
-                <div className="space-y-3 text-xs">
-                  <div className="bg-slate-900/90 p-3 rounded-xl border border-slate-800/80">
-                    <span className="text-rose-400 font-semibold block mb-0.5">The Bottleneck:</span>
-                    <span className="text-slate-300">{item.problem}</span>
-                  </div>
+                {/* Challenge */}
+                <div className="space-y-1">
+                  <span className="text-[11px] font-bold text-rose-400 flex items-center gap-1 uppercase tracking-wider">
+                    <AlertCircle className="w-3 h-3" /> The Breakdown
+                  </span>
+                  <p className="text-xs text-slate-300 leading-relaxed">
+                    {scenario.challenge}
+                  </p>
+                </div>
 
-                  <div className="bg-slate-900/90 p-3 rounded-xl border border-slate-800/80">
-                    <span className="text-[#4F5DFF] font-semibold block mb-0.5">The Solution:</span>
-                    <span className="text-slate-300">{item.solution}</span>
-                  </div>
-
-                  <div className="bg-[#0c162c] p-3 rounded-xl border border-[#2DD4BF]/20">
-                    <span className="text-[#2DD4BF] font-semibold flex items-center gap-1.5 mb-0.5">
-                      <CheckCircle2 className="w-3.5 h-3.5" />
-                      The Deliverable Outcome:
-                    </span>
-                    <span className="text-slate-200">{item.outcome}</span>
-                  </div>
+                {/* Approach */}
+                <div className="space-y-1">
+                  <span className="text-[11px] font-bold text-sky-400 flex items-center gap-1 uppercase tracking-wider">
+                    <ShieldCheck className="w-3 h-3" /> Our Architecture
+                  </span>
+                  <p className="text-xs text-slate-300 leading-relaxed">
+                    {scenario.approach}
+                  </p>
                 </div>
               </div>
 
-              <div className="pt-4 border-t border-slate-800/80 mt-6 flex items-center justify-between text-xs text-slate-400">
-                <span>Integrated in your CRM</span>
-                <span className="text-[#2DD4BF] font-semibold">Zero Spam</span>
+              {/* Outcome */}
+              <div className="pt-4 border-t border-slate-800/80 space-y-1 bg-slate-950/60 p-3 rounded-xl border border-slate-800">
+                <span className="text-[11px] font-bold text-emerald-400 flex items-center gap-1 uppercase tracking-wider">
+                  <CheckCircle2 className="w-3.5 h-3.5" /> Result
+                </span>
+                <p className="text-xs font-semibold text-white leading-relaxed">
+                  {scenario.outcome}
+                </p>
               </div>
             </div>
           ))}
         </div>
 
-        {/* Bottom Banner */}
-        <div className="mt-12 bg-[#081020] border border-slate-800 rounded-2xl p-6 text-center max-w-3xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div className="text-left">
-            <h4 className="text-base font-bold text-white flex items-center gap-2">
-              <ShieldCheck className="w-4 h-4 text-[#2DD4BF]" />
-              <span>Want to review where follow-up gets stuck in your database?</span>
-            </h4>
-            <p className="text-xs text-slate-300 mt-1">Start with a brief, honest human review of your pipeline.</p>
+        {/* Feature Spotlight Card */}
+        <div className="mt-14 max-w-4xl mx-auto bg-slate-900/80 rounded-2xl border border-slate-800 p-6 sm:p-8 flex flex-col sm:flex-row items-center gap-6 shadow-xl">
+          <div className="w-full sm:w-1/3 aspect-[4/3] rounded-xl overflow-hidden bg-slate-950 border border-slate-800 shrink-0">
+            <img
+              src="/src/assets/images/agent_happy_closing_1791193974108.jpg"
+              alt="Real estate clients reviewing contract and settlement documents"
+              className="w-full h-full object-cover"
+              referrerPolicy="no-referrer"
+            />
           </div>
-          <button
-            onClick={onOpenAudit}
-            className="px-6 py-3 bg-[#4F5DFF] hover:bg-[#4350e6] text-white text-xs font-bold rounded-xl shadow-md transition-all flex items-center gap-2 whitespace-nowrap cursor-pointer"
-          >
-            <span>Get My Free Pipeline Audit</span>
-            <ArrowRight className="w-3.5 h-3.5" />
-          </button>
+
+          <div className="space-y-3 text-left">
+            <span className="text-xs font-bold text-amber-400 uppercase tracking-wider">
+              The Real Estate Incubation Reality
+            </span>
+            <h3 className="text-xl font-bold text-white">
+              Over 80% of buyers and sellers take 6 to 24 months to transact.
+            </h3>
+            <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
+              When agents stop following up after 2 or 3 weeks, they discard the exact window where consumer motivation turns into an active listing or purchase contract. We ensure your pipeline stays organized, dignified, and proactive throughout their entire journey.
+            </p>
+            <div className="pt-2">
+              <button
+                onClick={onOpenTrial}
+                className="inline-flex items-center gap-2 text-xs font-bold text-slate-950 bg-amber-400 hover:bg-amber-300 px-5 py-3 rounded-xl transition-colors cursor-pointer shadow-md"
+              >
+                <span>Get My Free Pipeline Audit</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </button>
+            </div>
+          </div>
         </div>
 
       </div>
