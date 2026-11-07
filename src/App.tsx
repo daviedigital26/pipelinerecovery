@@ -1,286 +1,87 @@
-import { useState, useEffect } from 'react';
-import { OfferNav } from './components/OfferNav';
-import { Hero } from './components/Hero';
-import { Personalizer } from './components/Personalizer';
-import { WhatYouGet } from './components/WhatYouGet';
-import { HowItWorks } from './components/HowItWorks';
-import { RoiCalculator } from './components/RoiCalculator';
-import { Testimonials } from './components/Testimonials';
-import { Pricing } from './components/Pricing';
-import { Faq } from './components/Faq';
-import { FinalCta } from './components/FinalCta';
-import { Footer } from './components/Footer';
-import { SignupModal } from './components/SignupModal';
-import { GuidePreviewModal } from './components/GuidePreviewModal';
-import { MobileStickyBar } from './components/MobileStickyBar';
-import { ParallaxBackground } from './components/ParallaxBackground';
+import { useState, type FormEvent } from 'react';
+import { ArrowRight, CheckCircle2, ClipboardCheck, Database, Mail, Menu, ShieldCheck, TrendingUp, X, Layers, Users, LockKeyhole } from 'lucide-react';
 
-// Dedicated Landing Pages for Each Offer
-import { AllOffersOverview } from './components/offers/AllOffersOverview';
-import { PipelineRecoveryPage } from './components/offers/PipelineRecoveryPage';
-import { HandoffAuditPage } from './components/offers/HandoffAuditPage';
-import { ListingLaunchpadPage } from './components/offers/ListingLaunchpadPage';
-import { PriceDropProPage } from './components/offers/PriceDropProPage';
-import { SphereNurturePage } from './components/offers/SphereNurturePage';
-import { ScriptVaultPage } from './components/offers/ScriptVaultPage';
+type LeadForm = { name: string; email: string; phone: string; brokerage: string; market: string; crm: string; contacts: string; challenge: string; consent: boolean; website: string };
+const initialForm: LeadForm = { name:'', email:'', phone:'', brokerage:'', market:'', crm:'Follow Up Boss', contacts:'', challenge:'', consent:false, website:'' };
+const benefits = [
+  { icon: Database, title:'Find quiet contacts', detail:'Identify follow-up gaps in an existing CRM export.' },
+  { icon: Layers, title:'Prioritize the right segments', detail:'Separate inactive contacts from closed, active, and opted-out records.' },
+  { icon: ClipboardCheck, title:'Get a practical next step', detail:'Review the numbers and a short, responsible recovery plan.' }
+];
+const steps = [
+  { number:'01', title:'Request your Snapshot', text:'Tell us about your team, CRM, and database size. No account credentials are needed.' },
+  { number:'02', title:'Agree on a safe review', text:'We explain the data fields needed. Share a limited export only through an agreed secure method.' },
+  { number:'03', title:'Review the findings', text:'Get a plain-English summary of contact activity, limitations, and suggested actions.' },
+  { number:'04', title:'Decide what comes next', text:'Take the findings yourself or discuss an optional paid pilot.' }
+];
+const faq = [
+  ['Is the Pipeline Snapshot really free?', 'Yes. The initial Snapshot is free. A paid pilot or implementation is optional and is discussed separately.'],
+  ['Do I have to give you my CRM password?', 'No. We do not request passwords. We agree on a minimal export or another secure access method before reviewing data.'],
+  ['Will you automatically message my old leads?', 'No. We first identify appropriate segments and review consent, suppression lists, data accuracy, and your team’s outreach practices.'],
+  ['What if my CRM is messy?', 'That is common. We document missing fields, duplicates, and gaps rather than pretending the data is complete.'],
+  ['Do you guarantee appointments or commissions?', 'No. We provide a diagnostic and recommendations, not a guarantee of closings or revenue.']
+];
 
 export default function App() {
-  const [currentOfferSlug, setCurrentOfferSlug] = useState<string | null>(() => {
-    const hash = window.location.hash.replace(/^#/, '');
-    const validSlugs = [
-      'pipeline-recovery',
-      'revenue-blueprint',
-      'pipeline-implementation',
-      'listing-relaunch',
-      'price-drop-pro',
-      'handoff-audit',
-      'listing-launchpad',
-      'sphere-nurture',
-      'script-vault',
-      'pricing',
-      'faq'
-    ];
-    return validSlugs.includes(hash) ? hash : null;
-  });
-
-  const [trialModalOpen, setTrialModalOpen] = useState(false);
-  const [guideModalOpen, setGuideModalOpen] = useState(false);
-  const [toastMessage, setToastMessage] = useState<string | null>(null);
-
-  // Sync hash changes
-  useEffect(() => {
-    const handleHashChange = () => {
-      const hash = window.location.hash.replace(/^#/, '');
-      const validSlugs = [
-        'pipeline-recovery',
-        'revenue-blueprint',
-        'pipeline-implementation',
-        'listing-relaunch',
-        'price-drop-pro',
-        'handoff-audit',
-        'listing-launchpad',
-        'sphere-nurture',
-        'script-vault',
-        'pricing',
-        'faq'
-      ];
-      if (validSlugs.includes(hash)) {
-        setCurrentOfferSlug(hash);
-      } else if (!hash) {
-        setCurrentOfferSlug(null);
-      }
-    };
-
-    window.addEventListener('hashchange', handleHashChange);
-    return () => window.removeEventListener('hashchange', handleHashChange);
-  }, []);
-
-  const handleSelectOffer = (slug: string | null) => {
-    setCurrentOfferSlug(slug);
-    if (slug) {
-      window.location.hash = slug;
-    } else {
-      history.pushState(null, '', window.location.pathname);
-    }
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
-
-  const showToast = (message: string) => {
-    setToastMessage(message);
-    setTimeout(() => {
-      setToastMessage(null);
-    }, 3200);
-  };
-
-  const handleExploreDemo = () => {
-    const el = document.getElementById('try-your-name');
-    if (el) {
-      el.scrollIntoView({ behavior: 'smooth' });
-    }
-  };
-
-  return (
-    <div className="min-h-screen bg-[#0b101b] text-slate-100 flex flex-col font-sans pb-16 md:pb-0 relative selection:bg-amber-400 selection:text-slate-950">
-      {/* 3D Dynamic Parallax Background with smooth scene crossfading */}
-      <ParallaxBackground />
-
-      {/* Global Navigation with Offer Switcher */}
-      <OfferNav
-        currentOfferSlug={currentOfferSlug}
-        onSelectOffer={handleSelectOffer}
-        onOpenTrial={() => setTrialModalOpen(true)}
-      />
-
-      {/* Main Funnel Flow */}
-      <main className="flex-1 relative z-10">
-        {/* PAGE 2: PIPELINE RECOVERY */}
-        {currentOfferSlug === 'pipeline-recovery' && (
-          <PipelineRecoveryPage
-            onOpenTrial={() => setTrialModalOpen(true)}
-            onBackHome={() => handleSelectOffer(null)}
-            showToast={showToast}
-          />
-        )}
-
-        {/* PAGE 3: HANDOFF AUDIT & REVENUE BLUEPRINT */}
-        {(currentOfferSlug === 'handoff-audit' || currentOfferSlug === 'revenue-blueprint') && (
-          <HandoffAuditPage
-            onOpenTrial={() => setTrialModalOpen(true)}
-            onBackHome={() => handleSelectOffer(null)}
-            showToast={showToast}
-          />
-        )}
-
-        {/* PAGE 4A: LISTING LAUNCHPAD */}
-        {currentOfferSlug === 'listing-launchpad' && (
-          <ListingLaunchpadPage
-            onOpenTrial={() => setTrialModalOpen(true)}
-            onBackHome={() => handleSelectOffer(null)}
-            onPreviewGuide={() => setGuideModalOpen(true)}
-            showToast={showToast}
-          />
-        )}
-
-        {/* PAGE 4B: PRICE DROP PRO DEDICATED LANDING PAGE */}
-        {(currentOfferSlug === 'price-drop-pro' || currentOfferSlug === 'listing-relaunch') && (
-          <PriceDropProPage
-            onOpenListingAudit={() => setTrialModalOpen(true)}
-            onBackHome={() => handleSelectOffer(null)}
-          />
-        )}
-
-        {/* PAGE 5: SPHERE NURTURE & IMPLEMENTATION */}
-        {(currentOfferSlug === 'sphere-nurture' || currentOfferSlug === 'pipeline-implementation') && (
-          <SphereNurturePage
-            onOpenTrial={() => setTrialModalOpen(true)}
-            onBackHome={() => handleSelectOffer(null)}
-            showToast={showToast}
-          />
-        )}
-
-        {/* PAGE 6: SCRIPT VAULT */}
-        {currentOfferSlug === 'script-vault' && (
-          <ScriptVaultPage
-            onOpenTrial={() => setTrialModalOpen(true)}
-            onBackHome={() => handleSelectOffer(null)}
-            showToast={showToast}
-          />
-        )}
-
-        {/* PAGE 7: DEDICATED PRICING PAGE */}
-        {currentOfferSlug === 'pricing' && (
-          <div>
-            <div className="bg-amber-400/10 border-b border-amber-400/20 py-2.5 px-4 text-center">
-              <div className="mx-auto max-w-7xl flex flex-wrap items-center justify-center gap-2 sm:gap-4 text-xs sm:text-sm font-semibold text-amber-300">
-                <span>The 5-Tier Offer Structure · Realtor Pipeline Recovery™ &amp; Price Drop Pro™</span>
-                <span className="hidden sm:inline text-slate-600">·</span>
-                <button
-                  onClick={() => handleSelectOffer(null)}
-                  className="text-white hover:text-amber-200 underline cursor-pointer text-xs"
-                >
-                  ← Back to Home
-                </button>
-              </div>
-            </div>
-            <Pricing onOpenTrial={() => setTrialModalOpen(true)} />
-            <Faq onOpenTrial={() => setTrialModalOpen(true)} />
-            <FinalCta onOpenTrial={() => setTrialModalOpen(true)} />
+  const [menuOpen,setMenuOpen]=useState(false);
+  const [form,setForm]=useState<LeadForm>(initialForm);
+  const [status,setStatus]=useState<'idle'|'sending'|'sent'|'error'>('idle');
+  const [error,setError]=useState('');
+  const [openFaq,setOpenFaq]=useState<number|null>(0);
+  const scrollToForm=()=>{document.getElementById('snapshot-form')?.scrollIntoView({behavior:'smooth',block:'start'});setMenuOpen(false)};
+  const update=(key:keyof LeadForm,value:string|boolean)=>setForm(prev=>({...prev,[key]:value}));
+  async function submit(e:FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    if (!form.consent || status==='sending') return;
+    setStatus('sending');setError('');
+    try {
+      const response=await fetch('/api/lead',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({...form,source:'realtor-pipeline-recovery-v2'})});
+      const payload=await response.json().catch(()=>({}));
+      if(!response.ok || !payload.ok) throw new Error(payload.error || 'Submission could not be confirmed. Please try again.');
+      setStatus('sent');setForm(initialForm);
+    } catch(err) {setStatus('error');setError(err instanceof Error ? err.message : 'Something went wrong. Please try again.');}
+  }
+  return <div className="min-h-screen bg-[#081020] text-white">
+    <header className="sticky top-0 z-40 border-b border-white/10 bg-[#081020]/95 backdrop-blur-lg">
+      <div className="mx-auto flex max-w-6xl items-center justify-between gap-3 px-4 py-3 sm:px-6">
+        <a href="#top" className="flex min-w-0 items-center gap-3" aria-label="Realtor Pipeline Recovery home">
+          <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-[#4F5DFF]"><TrendingUp size={22}/></span>
+          <span className="min-w-0"><strong className="block text-sm leading-tight sm:text-base">Realtor Pipeline Recovery™</strong><small className="block text-[10px] uppercase tracking-widest text-slate-400">By Reale Revenue Systems</small></span>
+        </a>
+        <nav className="hidden items-center gap-6 text-sm text-slate-300 lg:flex" aria-label="Main navigation">
+          <a className="hover:text-white" href="#deliverable">The Snapshot</a><a className="hover:text-white" href="#how-it-works">How it works</a><a className="hover:text-white" href="#options">Next steps</a><a className="hover:text-white" href="#faq">FAQs</a>
+        </nav>
+        <div className="flex items-center gap-2"><button onClick={scrollToForm} className="rounded-lg bg-[#4F5DFF] px-3 py-2.5 text-xs font-bold text-white hover:bg-[#6873ff] sm:px-5 sm:text-sm">Get My Free Snapshot</button><button aria-label={menuOpen?'Close navigation':'Open navigation'} aria-expanded={menuOpen} className="rounded-md p-2 lg:hidden" onClick={()=>setMenuOpen(!menuOpen)}>{menuOpen?<X/>:<Menu/>}</button></div>
+      </div>
+      {menuOpen && <nav className="grid gap-3 border-t border-white/10 px-6 py-4 text-sm lg:hidden" aria-label="Mobile navigation">{[['The Snapshot','#deliverable'],['How it works','#how-it-works'],['Next steps','#options'],['FAQs','#faq']].map(([label,href])=><a onClick={()=>setMenuOpen(false)} href={href} key={href}>{label}</a>)}</nav>}
+    </header>
+    <main id="top">
+      <section className="relative overflow-hidden border-b border-white/10 px-4 pb-20 pt-16 sm:px-6 lg:pb-28 lg:pt-24">
+        <div className="absolute inset-0 -z-0 bg-[radial-gradient(ellipse_at_80%_10%,rgba(79,93,255,0.18),transparent_45%)]" aria-hidden="true"/>
+        <div className="relative mx-auto grid max-w-6xl items-center gap-12 lg:grid-cols-[1.1fr_.9fr]">
+          <div><p className="mb-5 text-xs font-bold uppercase tracking-[.18em] text-[#2DD4BF]">For established agents, teams & brokers</p>
+            <h1 className="max-w-3xl text-4xl font-extrabold leading-[1.1] tracking-tight sm:text-5xl lg:text-6xl">Before You Buy More Leads, <span className="text-[#a4adff]">Follow Up With the Ones You Have.</span></h1>
+            <p className="mt-6 max-w-xl text-lg leading-relaxed text-slate-300">Your CRM may contain overlooked opportunities. We help identify missed follow-ups, make sense of quiet contacts, and show you where to focus first.</p>
+            <div className="mt-7 flex flex-wrap gap-x-5 gap-y-3 text-sm text-slate-200">{['No CRM password needed','Practical diagnostic','No obligation'].map(x=><span key={x} className="inline-flex items-center gap-2"><CheckCircle2 size={17} className="text-[#2DD4BF]"/>{x}</span>)}</div>
+            <button onClick={scrollToForm} className="mt-9 inline-flex items-center gap-2 rounded-xl bg-[#4F5DFF] px-7 py-4 text-base font-bold shadow-lg shadow-indigo-700/20 transition hover:bg-[#6873ff]">Get My Free Pipeline Snapshot <ArrowRight size={19}/></button>
+            <p className="mt-3 text-xs text-slate-400">We’ll discuss what data is needed before any CRM export. No payment information required.</p>
           </div>
-        )}
-
-        {/* PAGE 8: DEDICATED FAQ PAGE */}
-        {currentOfferSlug === 'faq' && (
-          <div>
-            <div className="bg-amber-400/10 border-b border-amber-400/20 py-2.5 px-4 text-center">
-              <div className="mx-auto max-w-7xl flex flex-wrap items-center justify-center gap-2 sm:gap-4 text-xs sm:text-sm font-semibold text-amber-300">
-                <span>Frequently Asked Questions · Realtor Pipeline Recovery™ &amp; Price Drop Pro™</span>
-                <span className="hidden sm:inline text-slate-600">·</span>
-                <button
-                  onClick={() => handleSelectOffer(null)}
-                  className="text-white hover:text-amber-200 underline cursor-pointer text-xs"
-                >
-                  ← Back to Home
-                </button>
-              </div>
-            </div>
-            <Faq onOpenTrial={() => setTrialModalOpen(true)} />
-            <FinalCta onOpenTrial={() => setTrialModalOpen(true)} />
+          <div className="rounded-2xl border border-white/15 bg-[#101b30] p-5 shadow-2xl sm:p-7" aria-label="Illustrative diagnostic report preview">
+            <div className="mb-5 flex items-center justify-between gap-3 border-b border-white/10 pb-4"><div className="flex items-center gap-2"><ClipboardCheck className="text-[#2DD4BF]"/><strong className="text-sm">Pipeline Snapshot preview</strong></div><span className="rounded bg-white/10 px-2 py-1 text-[10px] uppercase tracking-wide text-slate-300">Example only</span></div>
+            <p className="mb-4 text-sm text-slate-300">What a review could reveal — these are illustrative categories, not actual client results.</p>
+            <div className="grid grid-cols-2 gap-3"><div className="rounded-xl bg-[#081020] p-4"><small className="text-slate-400">Quiet contacts</small><strong className="mt-2 block text-xl text-white">Activity gaps</strong></div><div className="rounded-xl bg-[#081020] p-4"><small className="text-slate-400">Follow-up owner</small><strong className="mt-2 block text-xl text-[#2DD4BF]">Needs review</strong></div></div>
+            <div className="mt-4 space-y-3 rounded-xl bg-[#081020] p-4"><p className="text-xs font-bold uppercase tracking-widest text-slate-400">Diagnostic categories</p>{[['Contact activity','Review last outbound activity'],['Lead hygiene','Check duplicates and exclusions'],['Next action','Assign ownership for eligible leads']].map(([name,detail])=><div key={name} className="flex items-start gap-3 border-t border-white/10 pt-3"><CheckCircle2 size={16} className="mt-0.5 shrink-0 text-[#2DD4BF]"/><div><strong className="block text-sm">{name}</strong><span className="text-xs text-slate-400">{detail}</span></div></div>)}</div>
           </div>
-        )}
-
-        {/* PAGE 1: HOME PAGE */}
-        {currentOfferSlug === null && (
-          <>
-            {/* 1. Hero */}
-            <Hero
-              onOpenTrial={() => setTrialModalOpen(true)}
-              onExploreDemo={handleExploreDemo}
-            />
-
-            {/* 2. Personalizer directly below Hero */}
-            <Personalizer
-              onOpenTrial={() => setTrialModalOpen(true)}
-              onPreviewGuide={() => setGuideModalOpen(true)}
-              showToast={showToast}
-            />
-
-            {/* 3. Our 2 Services */}
-            <WhatYouGet onOpenTrial={() => setTrialModalOpen(true)} />
-
-            {/* 4. The 5-Tier Offer Structure */}
-            <AllOffersOverview
-              onSelectOffer={handleSelectOffer}
-              onOpenTrial={() => setTrialModalOpen(true)}
-            />
-
-            {/* 5. How It Works */}
-            <HowItWorks onOpenTrial={() => setTrialModalOpen(true)} />
-
-            {/* 6. The Commission ROI Calculator */}
-            <RoiCalculator onOpenTrial={() => setTrialModalOpen(true)} />
-
-            {/* 7. Testimonials */}
-            <Testimonials onOpenTrial={() => setTrialModalOpen(true)} />
-
-            {/* 8. Pricing */}
-            <Pricing onOpenTrial={() => setTrialModalOpen(true)} />
-
-            {/* 9. FAQ */}
-            <Faq onOpenTrial={() => setTrialModalOpen(true)} />
-
-            {/* 10. Final CTA */}
-            <FinalCta onOpenTrial={() => setTrialModalOpen(true)} />
-          </>
-        )}
-      </main>
-
-      {/* Global Footer */}
-      <Footer onOpenTrial={() => setTrialModalOpen(true)} />
-
-      {/* Mobile Conversion Sticky Bar (<15% viewport height) */}
-      <MobileStickyBar onOpenTrial={() => setTrialModalOpen(true)} />
-
-      {/* Interactive Free Trial Signup / Instant Download Modal */}
-      <SignupModal
-        isOpen={trialModalOpen}
-        onClose={() => setTrialModalOpen(false)}
-        showToast={showToast}
-      />
-
-      {/* 12-Page Home Seller Guide Interactive Preview Modal */}
-      <GuidePreviewModal
-        isOpen={guideModalOpen}
-        onClose={() => setGuideModalOpen(false)}
-        onOpenTrial={() => setTrialModalOpen(true)}
-      />
-
-      {/* Global Toast Feedback Notification */}
-      {toastMessage && (
-        <div className="fixed bottom-16 md:bottom-6 right-4 left-4 md:left-auto md:max-w-md z-50 bg-slate-900 border border-amber-400/40 text-slate-100 text-xs sm:text-sm font-medium px-4 py-3 rounded-xl shadow-2xl shadow-black/80 flex items-center gap-3 animate-in fade-in slide-in-from-bottom-2 duration-200">
-          <span className="w-2 h-2 rounded-full bg-amber-400 shrink-0" />
-          <span className="flex-1">{toastMessage}</span>
         </div>
-      )}
-    </div>
-  );
+      </section>
+      <section id="deliverable" className="scroll-mt-24 bg-[#F7F4EE] px-4 py-20 text-[#081020] sm:px-6"><div className="mx-auto max-w-6xl"><p className="text-xs font-bold uppercase tracking-widest text-[#4F5DFF]">The free deliverable</p><h2 className="mt-3 max-w-2xl text-3xl font-extrabold sm:text-4xl">See where the follow-up stopped — and what to do next.</h2><p className="mt-4 max-w-2xl text-slate-600">A short review designed to prioritize work, not overwhelm your team with another dashboard.</p><div className="mt-9 grid gap-5 md:grid-cols-3">{benefits.map(({icon:Icon,title,detail})=><article key={title} className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm"><Icon className="text-[#4F5DFF]" size={26}/><h3 className="mt-4 text-lg font-bold">{title}</h3><p className="mt-2 text-sm leading-relaxed text-slate-600">{detail}</p></article>)}</div></div></section>
+      <section id="how-it-works" className="scroll-mt-24 px-4 py-20 sm:px-6"><div className="mx-auto max-w-6xl"><p className="text-xs font-bold uppercase tracking-widest text-[#2DD4BF]">Simple and secure</p><h2 className="mt-3 text-3xl font-extrabold sm:text-4xl">How your Snapshot works</h2><div className="mt-9 grid gap-5 md:grid-cols-4">{steps.map(s=><article key={s.number} className="rounded-xl border border-white/10 bg-white/[.04] p-5"><span className="text-sm font-extrabold text-[#2DD4BF]">{s.number}</span><h3 className="mt-3 text-lg font-bold">{s.title}</h3><p className="mt-2 text-sm leading-relaxed text-slate-300">{s.text}</p></article>)}</div></div></section>
+      <section className="border-y border-white/10 bg-[#101b30] px-4 py-16 sm:px-6"><div className="mx-auto grid max-w-6xl items-center gap-8 md:grid-cols-2"><div><p className="text-xs font-bold uppercase tracking-widest text-[#2DD4BF]">Built for real-world teams</p><h2 className="mt-3 text-3xl font-extrabold">A better conversation starts with better information.</h2><p className="mt-4 text-slate-300">We focus on clean segments, responsible outreach, and a clear person accountable for each next step. An old contact is not automatically permission to market to them.</p></div><div className="space-y-3">{['Review opted-out and closed records before outreach','Identify missing activity and handoff rules','Use human-led, relevant follow-up rather than bulk blasts'].map(x=><div key={x} className="flex gap-3 rounded-lg bg-[#081020] p-4 text-sm"><ShieldCheck className="shrink-0 text-[#2DD4BF]"/>{x}</div>)}</div></div></section>
+      <section id="options" className="scroll-mt-24 bg-[#F7F4EE] px-4 py-20 text-[#081020] sm:px-6"><div className="mx-auto max-w-6xl"><p className="text-xs font-bold uppercase tracking-widest text-[#4F5DFF]">Optional next steps</p><h2 className="mt-3 text-3xl font-extrabold sm:text-4xl">Start free. Move forward only if it makes sense.</h2><div className="mt-9 grid gap-5 md:grid-cols-3">{[{label:'1 · Discover',name:'Free Pipeline Snapshot',price:'$0',detail:'Identify gaps and review a limited set of diagnostic findings.'},{label:'2 · Validate',name:'Focused Recovery Pilot',price:'$997',detail:'A scoped paid test for an agreed lead segment, with defined success measures.'},{label:'3 · Implement',name:'Recovery Implementation',price:'Custom quote',detail:'CRM cleanup, team handoff rules, and appropriate outreach workflow setup.'}].map(o=><article key={o.name} className="flex flex-col rounded-xl border border-slate-200 bg-white p-6"><p className="text-xs font-bold uppercase tracking-wide text-[#4F5DFF]">{o.label}</p><h3 className="mt-3 text-xl font-bold">{o.name}</h3><strong className="mt-3 text-3xl">{o.price}</strong><p className="mt-3 flex-1 text-sm leading-relaxed text-slate-600">{o.detail}</p><button onClick={scrollToForm} className="mt-6 rounded-lg border border-[#4F5DFF] px-4 py-3 text-sm font-bold text-[#4F5DFF] hover:bg-indigo-50">{o.price==='$0'?'Request my free Snapshot':'Start with a free Snapshot'}</button></article>)}</div><p className="mt-5 text-sm text-slate-600">Pilot and implementation scopes are confirmed separately in writing. There are no promised appointments, closings, or revenue outcomes.</p></div></section>
+      <section id="snapshot-form" className="scroll-mt-24 px-4 py-20 sm:px-6"><div className="mx-auto grid max-w-6xl gap-10 lg:grid-cols-[.85fr_1.15fr]"><div><p className="text-xs font-bold uppercase tracking-widest text-[#2DD4BF]">Your first step</p><h2 className="mt-3 text-3xl font-extrabold sm:text-4xl">Request your Free Pipeline Snapshot.</h2><p className="mt-4 leading-relaxed text-slate-300">Tell us a little about your business. We’ll follow up about scope and how to share only the minimum necessary data securely.</p><div className="mt-8 flex items-start gap-3 text-sm text-slate-300"><LockKeyhole className="shrink-0 text-[#2DD4BF]"/><p>Do not send passwords, customer records, or confidential CRM exports through this form.</p></div><div className="mt-4 flex items-start gap-3 text-sm text-slate-300"><Users className="shrink-0 text-[#2DD4BF]"/><p>Best fit: producing agents, brokers, and teams with an established contact database.</p></div></div>
+      <div className="rounded-2xl border border-white/15 bg-[#101b30] p-5 sm:p-8">{status==='sent'?<div role="status" className="py-10 text-center"><CheckCircle2 size={45} className="mx-auto text-[#2DD4BF]"/><h3 className="mt-5 text-2xl font-bold">Your request was received.</h3><p className="mt-3 text-slate-300">Thank you. We’ll review the details and follow up using the contact information you provided.</p><button onClick={()=>setStatus('idle')} className="mt-7 rounded-lg border border-white/30 px-5 py-3">Submit another request</button></div>:<form onSubmit={submit} className="space-y-4"><div className="grid gap-4 sm:grid-cols-2"><label className="text-sm font-semibold">Full name *<input required autoComplete="name" maxLength={120} value={form.name} onChange={e=>update('name',e.target.value)} className="mt-2 w-full rounded-lg border border-slate-600 bg-[#081020] p-3 text-white"/></label><label className="text-sm font-semibold">Work email *<input required type="email" autoComplete="email" maxLength={254} value={form.email} onChange={e=>update('email',e.target.value)} className="mt-2 w-full rounded-lg border border-slate-600 bg-[#081020] p-3 text-white"/></label><label className="text-sm font-semibold">Phone *<input required type="tel" autoComplete="tel" maxLength={30} value={form.phone} onChange={e=>update('phone',e.target.value)} className="mt-2 w-full rounded-lg border border-slate-600 bg-[#081020] p-3 text-white"/></label><label className="text-sm font-semibold">Brokerage / team<input maxLength={120} value={form.brokerage} onChange={e=>update('brokerage',e.target.value)} className="mt-2 w-full rounded-lg border border-slate-600 bg-[#081020] p-3 text-white"/></label><label className="text-sm font-semibold">Market / city<input maxLength={120} value={form.market} onChange={e=>update('market',e.target.value)} className="mt-2 w-full rounded-lg border border-slate-600 bg-[#081020] p-3 text-white"/></label><label className="text-sm font-semibold">Primary CRM<select value={form.crm} onChange={e=>update('crm',e.target.value)} className="mt-2 w-full rounded-lg border border-slate-600 bg-[#081020] p-3 text-white">{['Follow Up Boss','kvCORE','Lofty','Brivity','Sierra Interactive','HubSpot','Other / Spreadsheet'].map(x=><option key={x}>{x}</option>)}</select></label></div><label className="block text-sm font-semibold">Approximate database size<input maxLength={80} placeholder="e.g. 850 contacts" value={form.contacts} onChange={e=>update('contacts',e.target.value)} className="mt-2 w-full rounded-lg border border-slate-600 bg-[#081020] p-3 text-white"/></label><label className="block text-sm font-semibold">Biggest follow-up challenge<textarea rows={3} maxLength={1000} value={form.challenge} onChange={e=>update('challenge',e.target.value)} className="mt-2 w-full rounded-lg border border-slate-600 bg-[#081020] p-3 text-white" placeholder="What do you suspect is slipping through the cracks?"/></label><div className="hidden" aria-hidden="true"><label>Website<input tabIndex={-1} autoComplete="off" value={form.website} onChange={e=>update('website',e.target.value)}/></label></div><label className="flex items-start gap-3 text-xs leading-relaxed text-slate-300"><input type="checkbox" required checked={form.consent} onChange={e=>update('consent',e.target.checked)} className="mt-1 accent-[#4F5DFF]"/><span>I agree to be contacted about this Snapshot request by phone or email. I understand submitting does not authorize unrelated marketing messages.</span></label>{status==='error'&&<p role="alert" className="rounded-lg border border-rose-400/50 bg-rose-950/30 p-3 text-sm text-rose-200">{error}</p>}<button disabled={status==='sending'} type="submit" className="flex w-full items-center justify-center gap-2 rounded-lg bg-[#4F5DFF] px-5 py-4 font-bold hover:bg-[#6873ff] disabled:opacity-60">{status==='sending'?'Sending request…':'Request My Free Snapshot'}<ArrowRight size={18}/></button><p className="flex items-center justify-center gap-2 text-center text-xs text-slate-400"><ShieldCheck size={14}/> No payment details or CRM passwords requested.</p></form>}</div></div></section>
+      <section id="faq" className="scroll-mt-24 border-t border-white/10 bg-[#101b30] px-4 py-20 sm:px-6"><div className="mx-auto max-w-3xl"><h2 className="mb-8 text-3xl font-extrabold">Frequently asked questions</h2>{faq.map(([question,answer],i)=><div key={question} className="border-b border-white/15"><button aria-expanded={openFaq===i} onClick={()=>setOpenFaq(openFaq===i?null:i)} className="flex w-full items-center justify-between gap-3 py-5 text-left font-semibold">{question}<span aria-hidden="true" className="text-2xl text-[#2DD4BF]">{openFaq===i?'−':'+'}</span></button>{openFaq===i&&<p className="pb-5 text-sm leading-relaxed text-slate-300">{answer}</p>}</div>)}</div></section>
+    </main>
+    <footer className="border-t border-white/10 px-4 py-10 text-sm text-slate-400 sm:px-6"><div className="mx-auto flex max-w-6xl flex-col justify-between gap-5 sm:flex-row"><div><strong className="text-white">Realtor Pipeline Recovery™</strong><p className="mt-1">A Reale Revenue Systems service.</p><p className="mt-2 text-xs">Form information is used to respond to Snapshot requests. Do not enter client records or other sensitive data.</p></div><div className="flex items-start gap-4"><a href="#how-it-works" className="hover:text-white">How it works</a><a href="#faq" className="hover:text-white">FAQ</a><button onClick={scrollToForm} className="text-[#a4adff] hover:text-white">Request Snapshot</button></div></div></footer>
+  </div>;
 }
